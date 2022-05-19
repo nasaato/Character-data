@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <iostream>
+int main() {
+    SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода
+    SetConsoleOutputCP(1251);
+    FILE* mf, * mf1;
+    if ((mf = fopen("temp.txt", "r")) == NULL) {
+        printf("Не удалось открыть файл");
+        return 0;
+    }
+    if ((mf1 = fopen("tempw.txt", "w")) == NULL) {
+        printf("Не удалось открыть файл");
+        return 0;
+    }
+    char str[50], buf[1001];
+    int i = 0, cnt = 0;
+    while (fscanf(mf, "%c", &buf[i]) != EOF) {
+        if (buf[i] == '\n') {
+            buf[i] = '\0';
+            cnt++;
+            printf("%s \n", buf);
+            fprintf(mf1, "%d ", cnt);
+            fputs(buf, mf1);
+            fprintf(mf1, "\n");
+            i = 0;
+        }
+        else i++;
+    }
+    buf[i] = '\0';
+    printf("%s\n", buf);
+    fputs(buf, mf1);
+    if (fclose(mf) == EOF) printf("ошибка\n");
+
+    if (fclose(mf1) == EOF) printf("ошибка\n");
+
+    return 0;
+}
